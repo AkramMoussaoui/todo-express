@@ -7,7 +7,6 @@ const express = require("express");
 const morgan = require("morgan");
 const helmet = require("helmet");
 const cors = require("cors");
-const { v4: uuidv4 } = require("uuid");
 const todoRouter = require("./api/todo/router");
 
 // Pour utiliser les variable d'environnements

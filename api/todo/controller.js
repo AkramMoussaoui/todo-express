@@ -1,3 +1,5 @@
+const { v4: uuidv4 } = require("uuid");
+
 let todos = [
   {
     id: 5,
@@ -92,10 +94,22 @@ const deleteTodo = (req, res) => {
   }
 };
 
+const getOneTodo = (req, res) => {
+  const { id } = req.params;
+  const todo = todos.find((elem) => elem.id == id);
+  if (!todo) {
+    res.status(400).send({
+      message: "todo not found",
+    });
+  }
+  res.status(200).send(todo);
+};
+
 module.exports = {
   getTodos,
   addTodo,
   updateTodo,
   patchTodo,
   deleteTodo,
+  getOneTodo,
 };

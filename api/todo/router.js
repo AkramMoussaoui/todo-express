@@ -5,6 +5,8 @@ const todoRouter = express.Router();
 
 todoRouter.get("/", controller.getTodos);
 
+todoRouter.get("/:id", controller.getOneTodo);
+
 todoRouter.post("/", controller.addTodo);
 
 todoRouter.put("/:id", controller.updateTodo);
