@@ -1,4 +1,4 @@
-// npm i express nodemon morgan helmet cors uuid
+// npm i express nodemon morgan helmet cors uuid joi
 // Scrum agile
 
 // PACKAGES :
@@ -8,7 +8,7 @@ const morgan = require("morgan");
 const helmet = require("helmet");
 const cors = require("cors");
 const todoRouter = require("./api/todo/router");
-
+const userRouter = require("./api/user/router");
 // Pour utiliser les variable d'environnements
 require("dotenv").config();
 
@@ -45,5 +45,5 @@ app.use(helmet());
 app.use(cors());
 
 app.use("/todos", todoRouter);
-
+app.use("/user", userRouter);
 app.listen(PORT, () => console.log("Listening on http://localhost:" + PORT));
