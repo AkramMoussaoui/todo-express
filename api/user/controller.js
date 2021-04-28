@@ -1,31 +1,20 @@
-// const { v4: uuidv4 } = require("uuid");
 const User = require("../../models/user");
-let users = [
-  {
-    id: 1,
-    nom: "nom",
-    prenom: "prenom",
-    email: "email",
-    phone: "phone",
-    isActif: true,
-  },
-];
 
 const getUsers = async (req, res) => {
-  const users = await User.find();
+  const { prenom, email } = req.query;
+  /*
+  const prenom = req.query.prenom
+  const email = req.query.email
+  */
+  const filters = {};
+  const options = { sort: { createdAt: -1 } };
+  if (prenom) filters.prenom = prenom;
+  if (email) filters.email = email;
+  const users = await User.find(filters, "-_id -__v", options);
   res.status(200).send(users);
 };
 const addUser = async (req, res) => {
   const { nom, prenom, phone, email } = req.body;
-  // const user = {
-  //   id: uuidv4(),
-  //   nom,
-  //   prenom,
-  //   email,
-  //   phone,
-  //   isActif: true,
-  // };
-  // users.push(user);
   const user = new User({
     nom,
     prenom,
@@ -42,7 +31,6 @@ const updateUser = async (req, res) => {
   const { id } = req.params;
   const { nom, prenom, email, phone } = req.body;
 
-  //const user = users.find((elem) => elem.id == id);
   const user = await User.findById(id);
 
   if (!user) {
@@ -50,11 +38,6 @@ const updateUser = async (req, res) => {
       message: "user not found",
     });
   }
-
-  // user.nom = nom || user.nom;
-  // user.prenom = prenom || user.prenom;
-  // user.email = email || user.email;
-  // user.phone = phone || user.phone;
 
   const user2 = {};
   user2.nom = nom || user.nom;
@@ -74,14 +57,12 @@ const updateUser = async (req, res) => {
 };
 const deleteUser = async (req, res) => {
   const { id } = req.params;
-  //const user = users.find((elem) => elem.id == id);
   const user = await User.findById(id);
   if (!user) {
     return res.status(400).send({
       message: "user not found",
     });
   }
-  // users = users.filter((elem) => elem.id != id);
   const removedUser = await User.findByIdAndDelete(id);
   if (!removedUser) {
     return res.status(500).send({
@@ -92,7 +73,6 @@ const deleteUser = async (req, res) => {
 };
 const getOneUser = async (req, res) => {
   const { id } = req.params;
-  //const user = users.find((elem) => elem.id == id);
   const user = await User.findById(id);
   if (!user) {
     return res.status(400).send({
@@ -103,14 +83,12 @@ const getOneUser = async (req, res) => {
 };
 const patchUser = async (req, res) => {
   const { id } = req.params;
-  //const user = users.find((elem) => elem.id == id);
   const user = await User.findById(id);
   if (!user) {
     return res.status(400).send({
       message: "user not found",
     });
   }
-  // user.isActif = !user.isActif;
   const patchedUser = await User.findByIdAndUpdate(
     id,
     {
