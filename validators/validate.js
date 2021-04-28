@@ -1,3 +1,4 @@
+const Joi = require("Joi");
 const validate = (schema) => {
   return (req, res, next) => {
     const template = Joi.object(schema);
